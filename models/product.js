@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,  // Consider making it required
+        required: true, 
     },
     description: {
         type: String,
@@ -18,7 +18,7 @@ const productSchema = new mongoose.Schema({
         default: 0,
     },
     img: {
-        type: String, // Use String for URLs
+        type: String,
     },
     category_id: {
         type: mongoose.Schema.Types.ObjectId,
