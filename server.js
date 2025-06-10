@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(logger('dev'));
 app.use('/auth', authRouter)
 app.use('/orders', oderRouter)
-app.use('/product', productRouter)
+app.use('/products', productRouter)
 app.use('/categories', categoryRouter);
 // Routes go here
 
