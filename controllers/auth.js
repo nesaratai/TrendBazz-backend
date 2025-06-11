@@ -19,10 +19,11 @@ router.post('/sign-up', async (req, res) => {
           // Create a new user with hashed password
     const user = await User.create({
         username: req.body.username,
-        hashedPassword: bcrypt.hashSync(req.body.password, saltRounds)
+        hashedPassword: bcrypt.hashSync(req.body.password, saltRounds),
+        role: req.body.role || 'Customer'
       });
           // Construct the payload
-    const payload = { username: user.username, _id: user._id };
+    const payload = { username: user.username, _id: user._id, role: user.role };
     // Create the token, attaching the payload
     const token = jwt.sign({ payload }, process.env.JWT_SECRET);
 
@@ -51,7 +52,10 @@ router.post('/sign-up', async (req, res) => {
       }
   
       // Construct the payload
-      const payload = { username: user.username, _id: user._id };
+      const payload = { 
+        username: user.username, 
+        _id: user._id,
+        role: user.role };
   
       // Create the token, attaching the payload
       const token = jwt.sign({ payload }, process.env.JWT_SECRET);

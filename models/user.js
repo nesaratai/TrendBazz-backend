@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
   hashedPassword: {
     type: String,
     required: true
+  },
+  role: {
+    type: String,
+    enum: ['Admin', 'Customer'],
+    default: 'Customer'
   }
 });
 
