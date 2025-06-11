@@ -4,11 +4,11 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const logger = require('morgan');
-const authRouter = require('./controllers/users')
+const authRouter = require('./controllers/auth')
 const categoryRouter = require ('./controllers/categories')
 const oderRouter = require ('./controllers/orders')
 const productRouter = require ('./controllers/products')
-
+const UserRouter = require('./controllers/users')
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -22,6 +22,7 @@ app.use('/auth', authRouter)
 app.use('/orders', oderRouter)
 app.use('/products', productRouter)
 app.use('/categories', categoryRouter);
+app.use('/user', UserRouter);
 // Routes go here
 
 app.listen(3000, () => {

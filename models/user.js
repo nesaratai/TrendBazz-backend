@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   fname: {
     type: String,
-    required: true,
   },
   lname: {
     type: String,
@@ -19,11 +18,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  password: {
+  hashedPassword: {
     type: String,
+    required: true
   }
 });
-// Create Model
+
+userSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    delete returnedObject.hashedPassword;
+  }
+});
+
 const User = mongoose.model('User', userSchema);
-// Export Model
+
 module.exports = User;
