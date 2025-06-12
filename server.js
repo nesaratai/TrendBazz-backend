@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
 const logger = require('morgan');
@@ -17,6 +18,7 @@ mongoose.connection.on('connected', () => {
 });
 
 app.use(express.json());
+app.use(cors());
 app.use(logger('dev'));
 app.use('/auth', authRouter)
 app.use('/orders', oderRouter)
