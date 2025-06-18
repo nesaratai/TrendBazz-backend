@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const logger = require('morgan');
 const authRouter = require('./controllers/auth')
 const categoryRouter = require ('./controllers/categories')
-const oderRouter = require ('./controllers/orders')
+const orderRouter = require ('./controllers/orders')
 const productRouter = require ('./controllers/products')
 const UserRouter = require('./controllers/users')
 
@@ -20,8 +20,9 @@ mongoose.connection.on('connected', () => {
 app.use(express.json());
 app.use(cors());
 app.use(logger('dev'));
+
 app.use('/auth', authRouter)
-app.use('/orders', oderRouter)
+app.use('/orders', orderRouter)
 app.use('/products', productRouter)
 app.use('/categories', categoryRouter);
 app.use('/user', UserRouter);
