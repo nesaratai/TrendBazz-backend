@@ -1,14 +1,16 @@
 // Import jwt to use the verify method
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
-function verifyToken(req, res, next) {
+async function verifyToken (req, res, next) {
   try {
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Assign decoded payload to req.user
     req.user = decoded.payload;
-
+    const user = await User.findById(req.user._id);
+    req.user = {...req.user, ...user}
     // Call next() to invoke the next middleware function
     next();
   } catch (err) {
