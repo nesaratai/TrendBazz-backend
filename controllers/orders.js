@@ -7,8 +7,19 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     // use try and catch
     try {
+      const { userId, items, totalPrice, shippingDetails } = req.body;
+
+      // Basic validation
+      if (!userId || !items || !totalPrice || !shippingDetails) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
       // Create a new order with the data from req.body
-        const createdOrder = await Order.create(req.body);
+      const createdOrder = await Order.create({
+        userId,
+        items,
+        totalPrice,
+        shippingDetails,
+      });
         // 201 created
         res.status(201).json(createdOrder);
     } catch (err) {
@@ -22,7 +33,9 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         // find the Orders
-      const foundOrders = await Order.find();
+        const foundOrders = await Order.find()
+        .populate('userId', 'username email')
+        .populate('items.productId', 'name price');
       // 200 successful
       res.status(200).json(foundOrders);
     } catch (err) {
@@ -31,12 +44,26 @@ router.get('/', async (req, res) => {
     }
   });
 
+// GET all orders by userId
+router.get('/user/:userId', async (req, res) => {
+  try {
+    const orders = await Order.find({ userId: req.params.userId })
+      .populate('items.productId', 'name price')
+      .sort({ orderDate: -1 }); // recent orders first
+
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
 
 // show one order
 router.get('/:orderId', async (req, res) => {
     try {
         // find the order by id
-      const foundOrder = await Order.findById(req.params.orderId);
+        const foundOrder = await Order.findById(req.params.orderId)
+        .populate('items.productId', 'name price')
+        .populate('userId', 'username email');
       // if not found send 404
       if (!foundOrder) {
         res.status(404);
@@ -54,6 +81,7 @@ router.get('/:orderId', async (req, res) => {
     }
   });
 
+  
 // updating Orders
 
 router.put('/:orderId', async (req, res) => {
