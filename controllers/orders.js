@@ -49,7 +49,8 @@ router.get('/user/:userId', async (req, res) => {
   try {
     const orders = await Order.find({ userId: req.params.userId })
       .populate('items.productId', 'name price')
-      .sort({ orderDate: -1 }); // recent orders first
+      // recent orders first
+      .sort({ orderDate: -1 }); 
 
     res.status(200).json(orders);
   } catch (err) {
@@ -81,7 +82,7 @@ router.get('/:orderId', async (req, res) => {
     }
   });
 
-  
+
 // updating Orders
 
 router.put('/:orderId', async (req, res) => {
