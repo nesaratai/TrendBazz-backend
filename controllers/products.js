@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 
-//  creating the Product
+//  Creating the Product
 router.post('/', async (req, res) => {
     // use try and catch
     try {
@@ -18,10 +18,10 @@ router.post('/', async (req, res) => {
   });
 
 
-// listing all Product
+// List all Products
 router.get('/', async (req, res) => {
     try {
-        // find the Products
+        // Find the Products
       const foundProducts = await Product.find();
       // 200 successful
       res.status(200).json(foundProducts);
@@ -30,6 +30,24 @@ router.get('/', async (req, res) => {
       res.status(500).json({ err: err.message }); 
     }
   });
+
+// GET products by category
+router.get('/category/:categoryName', async (req, res) => {
+  // Extract category name from params
+  const { categoryName } = req.params;
+  try {
+    // Find the products and populate the category reference
+    const products = await Product.find().populate('category_id');
+     // Filter products where the category name matches the requested nam
+    const filtered = products.filter(
+      (p) => p.category_id?.name?.toLowerCase() === categoryName.toLowerCase()
+    );
+    // Respond filtered list as a JSON
+    res.json(filtered);
+  } catch (error) {
+    res.status(500).json({ err: error.message });
+  }
+});
 
 
 // show one Product
@@ -53,6 +71,7 @@ router.get('/:productId', async (req, res) => {
       }
     }
   });
+
 
 // updating Products
 
