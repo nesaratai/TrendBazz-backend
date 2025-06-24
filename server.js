@@ -10,6 +10,7 @@ const categoryRouter = require ('./controllers/categories')
 const orderRouter = require ('./controllers/orders')
 const productRouter = require ('./controllers/products')
 const UserRouter = require('./controllers/users')
+const port = process.env.PORT ? process.env.PORT : '3001';
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -28,6 +29,6 @@ app.use('/categories', categoryRouter);
 app.use('/user', UserRouter);
 // Routes go here
 
-app.listen(3000, () => {
-  console.log('The express app is ready!');
+app.listen(port, () => {
+  console.log(`The app is ready on port ${port}!`);
 });
